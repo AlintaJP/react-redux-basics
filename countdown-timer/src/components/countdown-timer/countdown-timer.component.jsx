@@ -9,19 +9,19 @@ const defaultRemainingTime = {
   seconds: '00',
 };
 
-const start = Date.now();
-
 function CountdownTimer({ time, onComplete }) {
   const [remainingTime, setRemainingTime] = useState(defaultRemainingTime);
 
   const startTimer = useCallback(() => {
+    const start = Date.now();
+
     const intervalId = setInterval(() => {
-      const now = Date.now();
       let { hours, minutes, seconds } = time;
       const countDownMs = start + (hours * 60 * 60 * 1000 + minutes * 60 * 1000 + seconds * 1000);
+      const now = Date.now();
       const distance = countDownMs - now;
 
-      seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      seconds = Math.ceil((distance % (1000 * 60)) / 1000);
       minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 

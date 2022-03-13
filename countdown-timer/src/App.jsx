@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import { useAlert } from 'react-alert';
 import CountdownTimer from './components/countdown-timer/countdown-timer.component';
 
