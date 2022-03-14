@@ -1,0 +1,19 @@
+.input {
+  height: 25px;
+  border: 1px solid lightgray;
+  font: inherit;
+  font-weight: normal;
+  font-size: 16px;
+  padding: 5px;
+
+  &:focus {
+    border-color: #862e9c;
+    outline: 0 none;
+  }
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
