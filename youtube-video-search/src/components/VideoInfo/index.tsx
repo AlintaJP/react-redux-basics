@@ -1,10 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 // Styles
 import { Wrapper, Content, Text } from './VideoInfo.styles';
+// Types
+import { Video } from '../../API';
 
-function VideoInfo({ video }) {
-  const formatDigits = (number) => number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+type Props = {
+  video: Video;
+};
+
+const VideoInfo: React.FC<Props> = ({ video }) => {
+  const formatDigits = (number: number) => number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
   return (
     <Wrapper backdrop={video.snippet.thumbnails.high.url}>
@@ -40,10 +45,6 @@ function VideoInfo({ video }) {
       </Content>
     </Wrapper>
   );
-}
-
-VideoInfo.propTypes = {
-  video: PropTypes.oneOfType([PropTypes.object]).isRequired,
 };
 
 export default VideoInfo;

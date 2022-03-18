@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 // API
-import API from '../API';
+import API, { Video } from '../API';
 // Helpers
 import isPersistedState from '../helpers/isPersistedState';
 
-export const useVideoFetch = (videoId) => {
-  const [state, setState] = useState({ items: [] });
+export const useVideoFetch = (videoId: string) => {
+  const [state, setState] = useState<Video>({} as Video);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 

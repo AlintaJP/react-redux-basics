@@ -4,9 +4,11 @@ import API from '../API';
 // Helpers
 import isPersistedState from '../helpers/isPersistedState';
 
+import { Video } from '../API';
+
 const initialState = {
   total_pages: 0,
-  items: [],
+  items: [] as Video[],
   nextPageToken: '',
 };
 
@@ -19,7 +21,7 @@ export const useHomeFetch = () => {
 
   // searchTerm = searchTitle, different naming to escape shadowing
 
-  const fetchVideos = async (searchTitle, nextPageToken) => {
+  const fetchVideos = async (searchTitle: string, nextPageToken = '') => {
     try {
       setError(false);
       setLoading(true);

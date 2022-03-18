@@ -6,7 +6,7 @@ import ReactLogo from '../../images/react-icon.svg';
 
 import { Wrapper, Content, LogoImg } from './Header.styles';
 
-function Header() {
+const Header: React.FC = () => {
   return (
     <Wrapper>
       <Content>
@@ -18,6 +18,6 @@ function Header() {
       </Content>
     </Wrapper>
   );
-}
+};
 
 export default Header;
