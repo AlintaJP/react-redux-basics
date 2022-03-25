@@ -1,75 +1,39 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
+import {
+  getMs, getHours, getMinutes, getSeconds,
+} from '../../helpers/timeHelper';
 
 import './countdown-timer.styles.scss';
 
-const defaultRemainingTime = {
-  hours: '00',
-  minutes: '00',
-  seconds: '00',
-};
-
-function CountdownTimer({ time, onComplete }) {
-  const [remainingTime, setRemainingTime] = useState(defaultRemainingTime);
-
-  const startTimer = useCallback(() => {
-    const start = Date.now();
-
-    const intervalId = setInterval(() => {
-      let { hours, minutes, seconds } = time;
-      const countDownMs = start + (hours * 60 * 60 * 1000 + minutes * 60 * 1000 + seconds * 1000);
-      const now = Date.now();
-      const distance = countDownMs - now;
-
-      seconds = Math.ceil((distance % (1000 * 60)) / 1000);
-      minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-
-      const twoDigitHours = hours >= 10 ? hours : `0${hours}`;
-      const twoDigitMinutes = minutes >= 10 ? minutes : `0${minutes}`;
-      const twoDigitSeconds = seconds >= 10 ? seconds : `0${seconds}`;
-
-      if (distance < 0) {
-        setRemainingTime(defaultRemainingTime);
-        clearInterval(intervalId);
-        onComplete();
-      } else {
-        setRemainingTime({
-          hours: twoDigitHours,
-          minutes: twoDigitMinutes,
-          seconds: twoDigitSeconds,
-        });
-      }
-      return intervalId;
-    }, 1000);
-  }, [onComplete, time]);
+function CountdownTimer({ children, onComplete, settings }) {
+  const [ms, setMs] = useState(getMs(settings));
 
   useEffect(() => {
-    const intervalId = startTimer();
+    const intervalId = setInterval(() => {
+      setMs(ms - 1000);
+    }, 1000);
+
+    if (ms === 0) {
+      clearInterval(intervalId);
+      onComplete();
+    }
+
     return () => {
       clearInterval(intervalId);
     };
-  }, [startTimer]);
+  }, [onComplete, ms]);
 
   return (
-    <div className="countdown-timer">
-      <span>{remainingTime.hours}</span>
-      <span>hours</span>
-      <span>{remainingTime.minutes}</span>
-      <span>minutes</span>
-      <span>{remainingTime.seconds}</span>
-      <span>seconds</span>
-    </div>
+    <div className="countdown-timer">{children(getHours(ms), getMinutes(ms), getSeconds(ms))}</div>
   );
 }
 
 CountdownTimer.propTypes = {
-  time: PropTypes.shape({
-    hours: PropTypes.number,
-    minutes: PropTypes.number,
-    seconds: PropTypes.number,
-  }).isRequired,
+  children: PropTypes.func.isRequired,
   onComplete: PropTypes.func,
+  settings: PropTypes.objectOf(PropTypes.object()),
 };
 
 export default CountdownTimer;

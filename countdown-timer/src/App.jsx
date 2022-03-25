@@ -6,19 +6,29 @@ import CountdownTimer from './components/countdown-timer/countdown-timer.compone
 function App() {
   const alert = useAlert();
 
-  const time = {
-    hours: 2,
-    minutes: 30,
-    seconds: 30,
-  };
-
   const onTimerCompleted = () => {
     alert.show('Time is over!');
   };
 
+  const settings = {
+    hours: 10,
+    minutes: 10,
+    seconds: 10,
+  };
+
   return (
-    <div className="App">
-      <CountdownTimer time={time} onComplete={onTimerCompleted} />
+    <div className="app">
+      <CountdownTimer settings={settings} onComplete={onTimerCompleted}>
+        {(hours, minutes, seconds) => (
+          <>
+            <span>{hours}</span>
+            <span>:</span>
+            <span>{minutes}</span>
+            <span>:</span>
+            <span>{seconds}</span>
+          </>
+        )}
+      </CountdownTimer>
     </div>
   );
 }
