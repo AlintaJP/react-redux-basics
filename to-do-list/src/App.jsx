@@ -1,14 +1,8 @@
 import React from 'react';
-import Todo from './components/Todo/Todo';
-import TodoList from './components/TodoList/TodoList';
+import TodoContainer from './todo/components/TodoContainer/TodoContainer';
 
 function App() {
-  return (
-    <>
-      <Todo />
-      <TodoList />
-    </>
-  );
+  return <TodoContainer />;
 }
 
 export default App;

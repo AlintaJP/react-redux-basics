@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import fetchTodos from '../../utils/fetchTodos';
+import fetchTodos from '../todo/utils/fetchTodos';
+import todoStatus from './todos.status-types';
 
 const initialState = {
   todos: [
@@ -14,7 +15,7 @@ const initialState = {
   ],
 };
 
-export const getTodos = createAsyncThunk('todos/getTodos', async () => {
+export const getTodo = createAsyncThunk('todos/getTodos', async () => {
   const response = await fetchTodos();
   return response;
 });
@@ -34,15 +35,15 @@ const todoSlice = createSlice({
     },
   },
   extraReducers: {
-    [getTodos.pending]: (state) => {
-      state.status = 'loading';
+    [getTodo.pending]: (state) => {
+      state.status = todoStatus.LOADING;
     },
-    [getTodos.fulfilled]: (state, action) => {
-      state.status = 'success';
+    [getTodo.fulfilled]: (state, action) => {
+      state.status = todoStatus.SUCCESS;
       state.todos.push(action.payload);
     },
-    [getTodos.rejected]: (state) => {
-      state.status = 'failed';
+    [getTodo.rejected]: (state) => {
+      state.status = todoStatus.FAILED;
     },
   },
 });
@@ -50,5 +51,7 @@ const todoSlice = createSlice({
 export const { addTodo, deleteTodo } = todoSlice.actions;
 
 export const selectTodos = (state) => state.todos.todos;
+
+export const selectStatus = (state) => state.todos.status;
 
 export default todoSlice.reducer;

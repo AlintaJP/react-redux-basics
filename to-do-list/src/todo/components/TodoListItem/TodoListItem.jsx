@@ -1,19 +1,22 @@
 import React from 'react';
 import './TodoListItem.styles.scss';
-import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteTodo } from '../../redux/todos/todos.slice';
+import { ReactComponent as RemoveButton } from '../../assets/close-red.svg';
 
-function TodoListItem({ id, text }) {
-  const dispatch = useDispatch();
-
+function TodoListItem({ id, text, onDelete }) {
   const deleteHandler = () => {
-    dispatch(deleteTodo(id));
+    onDelete(id);
   };
 
   return (
     <li className="item">
-      <option onClick={deleteHandler}>{text}</option>
+      <span>{text}</span>
+      <RemoveButton
+        type="button"
+        onClick={deleteHandler}
+        className="remove-button"
+        aria-label="todo-remove-button"
+      />
     </li>
   );
 }
@@ -21,6 +24,7 @@ function TodoListItem({ id, text }) {
 TodoListItem.propTypes = {
   id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   text: PropTypes.string.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default TodoListItem;
