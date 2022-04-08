@@ -15,7 +15,7 @@ function TodoListItem({ id, text, onDelete }) {
         type="button"
         onClick={deleteHandler}
         className="remove-button"
-        aria-label="todo-remove-button"
+        aria-label={`Remove ${text} todo`}
       />
     </li>
   );
