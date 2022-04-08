@@ -22,15 +22,13 @@ module.exports = {
   plugins: ['react'],
   rules: {
     'linebreak-style': 0,
+    'object-curly-newline': 'off',
     'no-param-reassign': ['error', { props: false }],
     'import/prefer-default-export': 'off',
     'react/jsx-props-no-spreading': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
     'jsx-a11y/label-has-for': 'off',
-    'react/require-default-props': [
-      'error',
-      { ignoreFunctionalComponents: true },
-    ],
+    'react/require-default-props': ['error', { ignoreFunctionalComponents: true }],
     'max-len': [
       'error',
       {
