@@ -2,11 +2,9 @@ import React from 'react';
 import './Button.styles.scss';
 import PropTypes from 'prop-types';
 
-function Button({
-  children, onClick, submit, classes = '',
-}) {
+function Button({ children, onClick, submit }) {
   return (
-    <button type={submit ? 'submit' : 'button'} className={`button ${classes}`} onClick={onClick}>
+    <button type={submit ? 'submit' : 'button'} className="button" onClick={onClick}>
       {children}
     </button>
   );
@@ -16,7 +14,6 @@ Button.propTypes = {
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func,
   submit: PropTypes.bool,
-  classes: PropTypes.string,
 };
 
 export default Button;

@@ -45,9 +45,7 @@ function TodoContainer() {
       {status === todoStatus.LOADING ? (
         <ClipLoader size={50} color="#9c36b5" css={override} />
       ) : (
-        <Button onClick={addAsyncTodoHandler} classes="async-todo-button">
-          Get Async Todo
-        </Button>
+        <Button onClick={addAsyncTodoHandler}>Get Async Todo</Button>
       )}
     </>
   );
