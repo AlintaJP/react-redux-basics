@@ -1,0 +1,29 @@
+.input {
+  height: 25px;
+  border: 1px solid lightgray;
+  font: inherit;
+  font-weight: normal;
+  font-size: 16px;
+  padding: 5px;
+  margin-left: 10px;
+
+  &:focus {
+    border-color: #862e9c;
+    outline: #862e9c;
+  }
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+@media (max-width: 500px) {
+}
