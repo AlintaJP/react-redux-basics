@@ -2,7 +2,7 @@ import React from 'react';
 // Styles
 import { Wrapper, Content, Text } from './VideoInfo.styles';
 // Types
-import { Video } from '../../API';
+import Video from '../../models/videoModel';
 
 type Props = {
   video: Video;
@@ -12,35 +12,30 @@ const VideoInfo: React.FC<Props> = ({ video }) => {
   const formatDigits = (number: number) => number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
   return (
-    <Wrapper backdrop={video.snippet.thumbnails.high.url}>
+    <Wrapper backdrop={video.imageUrl}>
       <Content>
         <Text>
-          <h1>{video.snippet.title}</h1>
-          {video.snippet.description ? (
-            <>
-              <h3>Description</h3>
-              <p>{video.snippet.description}</p>
-            </>
-          ) : null}
-
-          <div className="sub-info">
-            <div>
-              <h3>VIEWS</h3>
-              <div className="views">{formatDigits(video.statistics.viewCount)}</div>
+          <h2>{video.title}</h2>
+          <h3>Description</h3>
+          <p>{video.description}</p>
+          <dl className="sub-info">
+            <div className="views">
+              <dt>VIEWS</dt>
+              <dd>{formatDigits(video.viewCount)}</dd>
             </div>
             <div className="likes">
-              <h3>LIKES</h3>
-              <div>{formatDigits(video.statistics.likeCount)}</div>
+              <dt>LIKES</dt>
+              <dd>{formatDigits(video.likeCount)}</dd>
             </div>
             <div className="channel">
-              <h3>CHANNEL</h3>
-              <p>{video.snippet.channelTitle}</p>
+              <dt>CHANNEL</dt>
+              <dd>{video.channelTitle}</dd>
             </div>
             <div className="published-at">
-              <h3>PUBLISHED AT</h3>
-              <p>{new Date(video.snippet.publishedAt).toLocaleString()}</p>
+              <dt>PUBLISHED AT</dt>
+              <dd>{new Date(video.publishedAt).toLocaleString()}</dd>
             </div>
-          </div>
+          </dl>
         </Text>
       </Content>
     </Wrapper>

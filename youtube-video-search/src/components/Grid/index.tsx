@@ -1,16 +1,21 @@
 import React from 'react';
 // Styles
-import { Wrapper, Content } from './Grid.styles';
+import { Wrapper, List } from './Grid.styles';
 // Types
 type Props = {
-  header: string;
+  title: string;
+  items: React.ReactElement[];
 };
 
-const Grid: React.FC<Props> = ({ header, children }) => {
+const Grid: React.FC<Props> = ({ title, items }) => {
   return (
     <Wrapper>
-      <h1>{header}</h1>
-      <Content>{children}</Content>
+      <h2>{title}</h2>
+      <List>
+        {items.map((item) => (
+          <li key={item.key}>{item}</li>
+        ))}
+      </List>
     </Wrapper>
   );
 };

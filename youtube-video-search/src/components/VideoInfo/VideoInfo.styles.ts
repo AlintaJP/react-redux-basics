@@ -4,7 +4,7 @@ type Props = {
   backdrop: string;
 };
 
-export const Wrapper = styled.div<Props>`
+export const Wrapper = styled.article<Props>`
   background: ${({ backdrop }) => (backdrop ? `url(${backdrop})` : 'rgba(0, 0, 0, 0.5)')};
   background-size: cover;
   background-position: center;
@@ -41,21 +41,31 @@ export const Text = styled.div`
   color: var(--white);
   overflow: hidden;
 
+  dt {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  dd {
+    font-size: 1rem;
+    color: var(--white);
+  }
+
   .sub-info {
     display: flex;
     justify-content: flex-start;
   }
 
   .views {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    dd {
+      margin: 0;
+    }
   }
 
   .likes {
     margin: 0 0 0 40px;
 
-    p {
+    dd {
       margin: 0;
     }
   }
@@ -63,7 +73,7 @@ export const Text = styled.div`
   .channel {
     margin: 0 0 0 40px;
 
-    p {
+    dd {
       margin: 0;
     }
   }
@@ -71,12 +81,12 @@ export const Text = styled.div`
   .published-at {
     margin: 0 0 0 40px;
 
-    p {
+    dd {
       margin: 0;
     }
   }
 
-  h1 {
+  h2 {
     @media screen and (max-width: 786px) {
       font-size: var(--fontBig);
     }

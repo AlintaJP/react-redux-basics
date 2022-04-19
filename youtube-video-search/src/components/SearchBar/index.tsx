@@ -1,43 +1,32 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useMemo } from 'react';
+import debounce from 'lodash.debounce';
 // Image
 import searchIcon from '../../images/search-icon.svg';
 // Styles
 import { Wrapper, Content } from './SearchBar.styles';
 // Types
 type Props = {
-  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  onChange: (searchTerm: string) => void;
 };
 
-const SearchBar: React.FC<Props> = ({ setSearchTerm }) => {
-  const [state, setState] = useState('');
-  const initial = useRef(true);
+const SearchBar: React.FC<Props> = ({ onChange }) => {
+  const onChangeHandler = (e: { target: { value: string } }) => {
+    onChange(e.target.value);
+  };
+
+  const debouncedChangeHanlder = useMemo(() => debounce(onChangeHandler, 500), []);
 
   useEffect(() => {
-    if (initial.current) {
-      initial.current = false;
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      setSearchTerm(state);
-    }, 500);
-
-    // eslint-disable-next-line consistent-return
     return () => {
-      clearTimeout(timer);
+      debouncedChangeHanlder.cancel();
     };
-  }, [setSearchTerm, state]);
+  }, []);
 
   return (
     <Wrapper>
       <Content>
         <img src={searchIcon} alt="search-icon" />
-        <input
-          type="text"
-          placeholder="Search Video"
-          onChange={(event) => setState(event.currentTarget.value)}
-          value={state}
-        />
+        <input type="search" placeholder="Search Video" onChange={debouncedChangeHanlder} />
       </Content>
     </Wrapper>
   );

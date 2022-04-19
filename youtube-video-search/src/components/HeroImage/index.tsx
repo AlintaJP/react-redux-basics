@@ -13,7 +13,7 @@ const HeroImage: React.FC<Props> = ({ image, title, channel }) => {
     <Wrapper image={image}>
       <Content>
         <Text>
-          <h1>{channel}</h1>
+          <h2>{channel}</h2>
           <p>{title}</p>
         </Text>
       </Content>

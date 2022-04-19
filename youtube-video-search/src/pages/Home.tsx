@@ -2,43 +2,48 @@ import React from 'react';
 // Components
 import HeroImage from '../components/HeroImage/index';
 import Grid from '../components/Grid/index';
-import Thumb from '../components/Thumb/index';
 import Spinner from '../components/Spinner/index';
 import SearchBar from '../components/SearchBar/index';
 import Button from '../components/Button/index';
+import ErrorMessage from '../components/ErrorMessage/index';
 // Hook
 import { useHomeFetch } from '../hooks/useHomeFetch';
+import Thumb from '../components/Thumb';
 // Image
 import NoImage from '../images/no-image.jpg';
+// Constants
+import { ERROR_MESSAGE } from '../constants/errorMessages';
 
 function Home() {
-  const { state, loading, error, searchTerm, setSearchTerm, setIsLoadingMore } = useHomeFetch();
+  const { videos, isLoading, isError, searchTerm, setSearchTerm, setIsLoadingMore } =
+    useHomeFetch();
 
-  if (error) return <div>Something went wrong ...</div>;
+  if (isError) return <ErrorMessage message={ERROR_MESSAGE} />;
+
+  const title = searchTerm ? 'Search Result' : 'Popular Videos';
+
+  const onClickHanlder = () => {
+    setIsLoadingMore(true);
+  };
+
+  const items = videos.items.map((video) => (
+    <Thumb clickable image={video.imageUrl ? video.imageUrl : NoImage} videoId={video.id} />
+  ));
 
   return (
-    <>
-      {!searchTerm && state.items[0] ? (
+    <main>
+      {!searchTerm && videos.items[0] ? (
         <HeroImage
-          image={state.items[0].snippet.thumbnails.high.url}
-          channel={state.items[0].snippet.channelTitle}
-          title={state.items[0].snippet.title}
+          image={videos.items[0].imageUrl}
+          channel={videos.items[0].channelTitle}
+          title={videos.items[0].title}
         />
       ) : null}
-      <SearchBar setSearchTerm={setSearchTerm} />
-      <Grid header={searchTerm ? 'Search Result' : 'Popular Videos'}>
-        {state.items.map((video) => (
-          <Thumb
-            key={video.id.videoId ? video.id.videoId : video.id}
-            clickable
-            image={video.snippet.thumbnails.high ? video.snippet.thumbnails.high.url : NoImage}
-            videoId={video.id.videoId ? video.id.videoId : video.id}
-          />
-        ))}
-      </Grid>
-      {loading && <Spinner />}
-      {!loading && <Button text="Load More" callback={() => setIsLoadingMore(true)} />}
-    </>
+      <SearchBar onChange={setSearchTerm} />
+      <Grid title={title} items={items} />
+      {isLoading && <Spinner />}
+      {!isLoading && <Button text="Load More" onClick={onClickHanlder} />}
+    </main>
   );
 }
 

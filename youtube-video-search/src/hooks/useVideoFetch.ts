@@ -1,46 +1,48 @@
 import { useState, useEffect } from 'react';
 // API
-import API, { Video } from '../API';
+import { fetchVideo } from '../services/youtubeService';
 // Helpers
-import isPersistedState from '../helpers/isPersistedState';
+import { getSessionState, setSesstionState } from '../helpers/sesstionStateHelper';
+// Models
+import Video from '../models/videoModel';
 
 export const useVideoFetch = (videoId: string) => {
-  const [state, setState] = useState<Video>({} as Video);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [video, setVideo] = useState<Video | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    const fetchVideo = async () => {
+    const getVideo = async () => {
       try {
-        setLoading(true);
-        setError(false);
+        setIsLoading(true);
+        setIsError(false);
 
-        const video = await API.fetchVideo(videoId);
+        const data = await fetchVideo(videoId);
 
-        setState({
-          ...video.items[0],
+        setVideo({
+          ...data,
         });
       } catch (err) {
-        setError(true);
+        setIsError(true);
       }
 
-      setLoading(false);
+      setIsLoading(false);
     };
 
-    const sessionState = isPersistedState(videoId);
+    const sessionState = getSessionState(videoId);
 
     if (sessionState) {
-      setState(sessionState);
-      setLoading(false);
+      setVideo(sessionState);
+      setIsLoading(false);
       return;
     }
 
-    fetchVideo();
+    getVideo();
   }, [videoId]);
 
   useEffect(() => {
-    sessionStorage.setItem(videoId, JSON.stringify(state));
-  }, [videoId, state]);
+    setSesstionState(videoId, video);
+  }, [videoId, video]);
 
-  return { state, loading, error };
+  return { video, isLoading, isError };
 };

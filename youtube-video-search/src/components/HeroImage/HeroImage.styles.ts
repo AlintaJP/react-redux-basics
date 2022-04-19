@@ -38,7 +38,7 @@ export const Text = styled.div`
   min-height: 100px;
   color: var(--white);
 
-  h1 {
+  h2 {
     font-size: var(--fontSuperBig);
 
     @media screen and (max-width: 720px) {

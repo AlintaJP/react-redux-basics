@@ -22,7 +22,7 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding : 0;
 
-    h1 {
+    h2 {
       font-size: 2rem;
       font-weight: 600;
       color: var(--white);

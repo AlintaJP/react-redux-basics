@@ -28,17 +28,14 @@ export const Content = styled.div`
   input {
     font-size: var(--fontBig);
     position: absolute;
-    left: 0;
+    left: 5%;
     margin: 8px 0;
-    padding: 0 0 0 60px;
+    padding: 0 0 0 50px;
     border: 0;
-    width: 95%;
+    width: 90%;
     background: transparent;
     height: 40px;
     color: var(--white);
-
-    :focus {
-      outline: none;
-    }
+    outline: outset;
   }
 `;

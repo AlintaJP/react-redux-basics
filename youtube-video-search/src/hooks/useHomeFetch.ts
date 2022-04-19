@@ -1,70 +1,69 @@
 import { useState, useEffect } from 'react';
 // API
-import API from '../API';
+import { fetchVideos } from '../services/youtubeService';
 // Helpers
-import isPersistedState from '../helpers/isPersistedState';
-
-import { Video } from '../API';
+import { getSessionState, setSesstionState, HOME_STATE } from '../helpers/sesstionStateHelper';
+// Models
+import Video from '../models/videoModel';
+import SearchedVideo from '../models/videoSearchResultModel';
 
 const initialState = {
   total_pages: 0,
-  items: [] as Video[],
-  nextPageToken: '',
+  items: [] as ReadonlyArray<Video> | ReadonlyArray<SearchedVideo>,
+  pageToken: '',
 };
 
 export const useHomeFetch = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [state, setState] = useState(initialState);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [videos, setVideos] = useState(initialState);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  // searchTerm = searchTitle, different naming to escape shadowing
-
-  const fetchVideos = async (searchTitle: string, nextPageToken = '') => {
+  const getVideos = async (searchTitle: string, pageToken = '') => {
     try {
-      setError(false);
-      setLoading(true);
+      setIsError(false);
+      setIsLoading(true);
 
-      const videos = await API.fetchVideos(searchTitle, nextPageToken);
+      const data = await fetchVideos(searchTitle, pageToken);
 
-      setState((prev) => ({
-        ...videos,
+      setVideos((prev) => ({
         total_pages: prev.total_pages + 1,
-        items: [...prev.items, ...videos.items],
-        nextPageToken: videos.nextPageToken,
+        items: [...prev.items, ...data.items],
+        pageToken: data.pageToken,
       }));
     } catch (err) {
-      setError(true);
+      console.error(err);
+      setIsError(true);
     }
 
-    setLoading(false);
+    setIsLoading(false);
   };
 
   useEffect(() => {
     if (!searchTerm) {
-      const sessionState = isPersistedState('homeState');
+      const sessionState = getSessionState(HOME_STATE);
 
       if (sessionState) {
-        setState(sessionState);
+        setVideos(sessionState);
         return;
       }
     }
 
-    setState(initialState);
-    fetchVideos(searchTerm);
+    setVideos(initialState);
+    getVideos(searchTerm);
   }, [searchTerm]);
 
   useEffect(() => {
     if (!isLoadingMore) return;
 
-    fetchVideos(searchTerm, state.nextPageToken);
+    getVideos(searchTerm, videos.pageToken);
     setIsLoadingMore(false);
-  }, [isLoadingMore, state.nextPageToken, searchTerm]);
+  }, [isLoadingMore, videos.pageToken, searchTerm]);
 
   useEffect(() => {
-    if (!searchTerm) sessionStorage.setItem('homeState', JSON.stringify(state));
-  }, [searchTerm, state]);
+    if (!searchTerm) setSesstionState(HOME_STATE, videos);
+  }, [searchTerm, videos]);
 
-  return { state, loading, error, searchTerm, setSearchTerm, setIsLoadingMore };
+  return { videos, isLoading, isError, searchTerm, setSearchTerm, setIsLoadingMore };
 };

@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   padding: 0 20px;
 `;
 
-export const Content = styled.div`
+export const Content = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
