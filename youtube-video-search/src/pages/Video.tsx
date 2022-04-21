@@ -8,7 +8,6 @@ import VideoInfo from '../components/VideoInfo/index';
 // Hook
 import { useVideoFetch } from '../hooks/useVideoFetch';
 // Constants
-import { ERROR_MESSAGE } from '../constants/errorMessages';
 
 const Video: React.FC = () => {
   const { videoId } = useParams<{ videoId: string }>();
@@ -16,7 +15,7 @@ const Video: React.FC = () => {
   const { video, isLoading, isError } = useVideoFetch(videoId!);
 
   if (isLoading) return <Spinner />;
-  if (isError) return <ErrorMessage message={ERROR_MESSAGE} />;
+  if (isError) return <ErrorMessage />;
 
   return (
     <main>

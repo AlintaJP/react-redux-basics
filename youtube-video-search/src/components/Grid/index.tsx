@@ -12,8 +12,8 @@ const Grid: React.FC<Props> = ({ title, items }) => {
     <Wrapper>
       <h2>{title}</h2>
       <List>
-        {items.map((item) => (
-          <li key={item.key}>{item}</li>
+        {items.map((item, index) => (
+          <li key={item.key ? item.key : index}>{item}</li>
         ))}
       </List>
     </Wrapper>

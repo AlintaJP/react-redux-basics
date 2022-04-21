@@ -12,13 +12,12 @@ import Thumb from '../components/Thumb';
 // Image
 import NoImage from '../images/no-image.jpg';
 // Constants
-import { ERROR_MESSAGE } from '../constants/errorMessages';
 
 function Home() {
   const { videos, isLoading, isError, searchTerm, setSearchTerm, setIsLoadingMore } =
     useHomeFetch();
 
-  if (isError) return <ErrorMessage message={ERROR_MESSAGE} />;
+  if (isError) return <ErrorMessage />;
 
   const title = searchTerm ? 'Search Result' : 'Popular Videos';
 
@@ -27,7 +26,12 @@ function Home() {
   };
 
   const items = videos.items.map((video) => (
-    <Thumb clickable image={video.imageUrl ? video.imageUrl : NoImage} videoId={video.id} />
+    <Thumb
+      clickable
+      image={video.imageUrl ? video.imageUrl : NoImage}
+      videoId={video.id}
+      key={video.id}
+    />
   ));
 
   return (

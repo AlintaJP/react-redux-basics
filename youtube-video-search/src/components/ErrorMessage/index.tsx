@@ -1,14 +1,15 @@
 import React from 'react';
 import { Message, Card } from './ErrorMessage.styles';
+import { ERROR_MESSAGE } from '../../constants/errorMessages';
 
 type Props = {
-  message: string;
+  message?: string;
 };
 
 const ErrorMessage: React.FC<Props> = ({ message }) => {
   return (
     <Card>
-      <Message>{message}</Message>
+      <Message>{message || ERROR_MESSAGE}</Message>
     </Card>
   );
 };
